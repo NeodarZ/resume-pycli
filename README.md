@@ -1,7 +1,5 @@
 # resume-pycli
 
-> :warning: Unmaintained project, replaced by [GoResume](https://github.com/nikaro/goresume), still perfectly usable so feel free to fork.
-
 CLI tool to build a beautiful resume from a [JSON
 Resume](https://jsonresume.org/) file.
 
@@ -18,7 +16,6 @@ This is a Python port of
 * Export your resume to PDF
 * Customize the theme of your HTML and PDF exports
 * Run a local HTTP server to preview the HTML export
-* Create an inital `resume.json` with placeholder values to get started
 
 ## Installation
 
@@ -40,10 +37,8 @@ Options:
 
 Commands:
   export    Export to HTML and PDF.
-  init      Initialize a resume.json file.
   serve     Serve resume.
   validate  Validate resume's schema.
-  version   Show application version.
 ```
 
 Export your resume with a custom theme, for exemple one located in
