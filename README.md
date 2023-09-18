@@ -37,6 +37,7 @@ Options:
 
 Commands:
   export    Export to HTML and PDF.
+  init      Initialize a resume.json file in the current directory.
   serve     Serve resume.
   validate  Validate resume's schema.
   version   Show application version.

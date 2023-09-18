@@ -6,6 +6,7 @@ from importlib import (
 import json
 from typing import Optional
 from pathlib import Path
+import shutil
 
 import typer
 
@@ -18,15 +19,15 @@ from . import html
 
 app = typer.Typer(help="CLI tool to easily setup a new resume.")
 
-class Logger:
 
+class Logger:
     @classmethod
     def info(cls, message):
         Console(style="bold white").print(message)
 
     @classmethod
     def error(cls, message):
-        Console(stderr=True, style="bold red").print(f'Error: {message}')
+        Console(stderr=True, style="bold red").print(f"Error: {message}")
         raise typer.Exit(code=1)
 
 
@@ -39,8 +40,10 @@ class Options:
 
 
 def check_resume_exist(options):
-    if not hasattr(options, 'resume'):
-        Logger.error("resume.json file doesn't exist. Please use init command if needed.")
+    if not hasattr(options, "resume"):
+        Logger.error(
+            "resume.json file doesn't exist. Please use init command if needed."
+        )
 
 
 @app.callback()
@@ -63,6 +66,16 @@ def main(
 def version() -> None:
     """Show application version."""
     Logger.info(metadata.version("resume_pycli"))
+
+
+@app.command()
+def init() -> None:
+    """Init example resume.json in the current directory."""
+    src = resources.files("resume_pycli").joinpath("resume.json")
+    dst = Path.cwd()
+    if (dst / "resume.json").exists():
+        Logger.error("File exist")
+    shutil.copy(str(src), str(dst))
 
 
 @app.command()
