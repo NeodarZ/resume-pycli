@@ -9,12 +9,25 @@ from pathlib import Path
 
 import typer
 
+from rich.console import Console
+
 from . import utils
 from . import pdf
 from . import html
 
 
 app = typer.Typer(help="CLI tool to easily setup a new resume.")
+
+class Logger:
+
+    @classmethod
+    def info(cls, message):
+        Console(style="bold white").print(message)
+
+    @classmethod
+    def error(cls, message):
+        Console(stderr=True, style="bold red").print(f'Error: {message}')
+        raise typer.Exit(code=1)
 
 
 @dataclass
@@ -43,7 +56,7 @@ def main(
 @app.command()
 def version() -> None:
     """Show application version."""
-    print(metadata.version("resume_pycli"))
+    Logger.info(metadata.version("resume_pycli"))
 
 
 @app.command()
