@@ -46,14 +46,14 @@ Export your resume with a custom theme, for exemple one located in
 `./themes/my-beautiful-theme`:
 
 ```
-resume export --theme my-beautiful-theme
+resume --theme my-beautiful-theme export
 ```
 
 If you want to export custom version of your resume, for example a shorter one
 located at `./resume.short.json`, to PDF only:
 
 ```
-resume export --resume resume.short.json --pdf
+resume --resume resume.short.json export --pdf
 ```
 
 ## Themes

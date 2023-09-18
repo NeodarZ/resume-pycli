@@ -7,6 +7,7 @@ from importlib import metadata
 import resume_pycli
 from resume_pycli.cli import app
 
+
 def test_version():
     runner = CliRunner()
     with runner.isolated_filesystem():
@@ -15,6 +16,7 @@ def test_version():
         result = runner.invoke(app, ["version"])
         assert result.stdout.strip() == metadata.version("resume_pycli")
         assert result.exit_code == 0
+
 
 def test_validate():
     runner = CliRunner()
