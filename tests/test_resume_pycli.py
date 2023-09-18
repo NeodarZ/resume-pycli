@@ -55,6 +55,17 @@ def test_export_no_html():
         assert not Path("public", "index.html").exists()
 
 
+def test_export_only_pdf():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(app, ["export", "--pdf"])
+        assert result.exit_code == 0
+        assert Path("public", "index.pdf").exists()
+        assert not Path("public", "index.html").exists()
+
+
 def test_export_no_pdf():
     runner = CliRunner()
     with runner.isolated_filesystem():
@@ -65,6 +76,15 @@ def test_export_no_pdf():
         assert Path("public", "index.html").exists()
         assert not Path("public", "index.pdf").exists()
 
+def test_export_only_html():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(app, ["export", "--html"])
+        assert result.exit_code == 0
+        assert Path("public", "index.html").exists()
+        assert not Path("public", "index.pdf").exists()
 
 def test_export_custom_theme():
     runner = CliRunner()

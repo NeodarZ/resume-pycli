@@ -4,6 +4,7 @@ from importlib import (
     metadata,
 )
 import json
+from typing import Optional
 from pathlib import Path
 
 import typer
@@ -95,20 +96,18 @@ def serve(
 
 @app.command()
 def export(
-    to_pdf: bool = typer.Option(
-        True,
-        "--pdf",
-        "--no-pdf",
+    to_pdf: Optional[bool] = typer.Option(
+        None,
+        "--pdf/--no-pdf",
         help="Export to PDF.",
     ),
     pdf_backend: pdf.Backend = typer.Option(
         "playwright",
         help="Select PDF engine.",
     ),
-    to_html: bool = typer.Option(
-        True,
-        "--html",
-        "--no-html",
+    to_html: Optional[bool] = typer.Option(
+        None,
+        "--html/--no-html",
         help="Export to HTML.",
     ),
     output: Path = typer.Option(
@@ -118,6 +117,13 @@ def export(
 ) -> None:
     """Export to HTML and PDF."""
     output.mkdir(parents=True, exist_ok=True)
+    if to_html is None and to_pdf is None:
+        to_html = True
+        to_pdf = True
+    elif to_html is None and not to_pdf:
+        to_html = True
+    elif to_pdf is None and not to_html:
+        to_pdf = True
     if to_html:
         html.export(
             resume=Options.resume,
