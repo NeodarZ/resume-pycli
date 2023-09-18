@@ -38,6 +38,11 @@ class Options:
     theme: Path
 
 
+def check_resume_exist(options):
+    if not hasattr(options, 'resume'):
+        Logger.error("resume.json file doesn't exist. Please use init command if needed.")
+
+
 @app.callback()
 def main(
     resume: Path = typer.Option(
@@ -49,8 +54,9 @@ def main(
         help="Override the theme.",
     ),
 ) -> None:
-    Options.resume = json.loads(resume.read_text())
-    Options.theme = utils.find_theme(theme or Options.resume.get("theme", "base"))
+    if resume.exists():
+        Options.resume = json.loads(resume.read_text())
+        Options.theme = utils.find_theme(theme or Options.resume.get("theme", "base"))
 
 
 @app.command()
@@ -69,6 +75,7 @@ def validate(
     ),
 ) -> None:
     """Validate resume's schema."""
+    check_resume_exist(Options)
     schema_file = json.loads(schema.read_text())
     err = utils.validate(Options.resume, schema_file)
     if err:
@@ -96,6 +103,7 @@ def serve(
     ),
 ) -> None:
     """Serve resume."""
+    check_resume_exist(Options)
     if browser:
         typer.launch(f"http://{host}:{port}/")
     html.serve(
@@ -129,6 +137,7 @@ def export(
     ),
 ) -> None:
     """Export to HTML and PDF."""
+    check_resume_exist(Options)
     output.mkdir(parents=True, exist_ok=True)
     if to_html is None and to_pdf is None:
         to_html = True
