@@ -39,6 +39,7 @@ Commands:
   export    Export to HTML and PDF.
   serve     Serve resume.
   validate  Validate resume's schema.
+  version   Show application version.
 ```
 
 Export your resume with a custom theme, for exemple one located in

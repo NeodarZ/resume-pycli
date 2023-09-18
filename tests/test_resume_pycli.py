@@ -2,10 +2,19 @@ from typer.testing import CliRunner
 import json
 from pathlib import Path
 from shutil import copytree
+from importlib import metadata
 
 import resume_pycli
 from resume_pycli.cli import app
 
+def test_version():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(app, ["version"])
+        assert result.stdout.strip() == metadata.version("resume_pycli")
+        assert result.exit_code == 0
 
 def test_validate():
     runner = CliRunner()

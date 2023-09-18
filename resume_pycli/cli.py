@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from importlib.resources import files
+from importlib import (
+    resources,
+    metadata,
+)
 import json
 from pathlib import Path
 
@@ -37,9 +40,15 @@ def main(
 
 
 @app.command()
+def version() -> None:
+    """Show application version."""
+    print(metadata.version("resume_pycli"))
+
+
+@app.command()
 def validate(
     schema: Path = typer.Option(
-        files("resume_pycli").joinpath("schema.json"),
+        resources.files("resume_pycli").joinpath("schema.json"),
         exists=True,
         dir_okay=False,
         help="Path to a custom schema to validate against.",
